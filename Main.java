@@ -33,16 +33,27 @@ public class Main {
      * @return int input
      */
     public static int userInput() {
-        Scanner scan = new Scanner(System.in);
-        int input = scan.nextInt();     // User int input
-        scan.nextLine();                // serves at getch
-        return input;
+        // https://stackoverflow.com/questions/39316625/make-user-only-input-integer-in-scanner-java
+        Scanner sc = new Scanner(System.in);
+        int intInputValue = -1;
+        while (true) {
+            String input = sc.next();
+            try {
+                intInputValue = Integer.parseInt(input);
+                // TODO: check for whitespace?
+                if(intInputValue <= 0) Integer.parseInt("a");
+                break;
+            } catch (NumberFormatException ne) {
+                System.out.println("This is not a number");
+            }
+        }
+        return intInputValue;
     }
 
     public static void main(String[] args) {
         printTitle();
         printOptions();
-//        int input = userInput();
-//        System.out.println("You entered: " + input);
+        int input = userInput();
+        System.out.println("You entered: " + input);
     }
 }
