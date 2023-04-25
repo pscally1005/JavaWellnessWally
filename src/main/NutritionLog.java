@@ -21,8 +21,7 @@ public class NutritionLog {
      * @returns none
 	 */
 	public static void main(String[] args) {
-		
-		System.out.println("NUTRITION LOG");
+		System.out.println("\nNUTRITION LOG");
 	}
 
 }

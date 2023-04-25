@@ -3,8 +3,8 @@ import java.util.Scanner;
 
 // Main.java is the main file to run all the different screens of Wellness Wally
 public class Main {
-	
-	private final static String LINE = "\n-------------------";
+
+	final static String LINE = "-------------------";
 
     /**
      * Prints the title at the top of Main
@@ -45,25 +45,14 @@ public class Main {
      * @requires none
      * @modifies none
      * @effects none
-     * @throws none
+     * @throws InputMismatchException if input is not an int
      * @returns int input of the user from command line
      */ 
-    @SuppressWarnings("resource")
-	public static int userInput() {  
-    	System.out.print("Enter a number to select: ");
+	public static int userInput() throws InputMismatchException {     	
     	Scanner scan = new Scanner(System.in);
-    	int input = -1;
-    	try {
-    		input = scan.nextInt();
-    		if(input < 0) throw new InputMismatchException();
-    		System.out.println();
-    	}
-    	catch(InputMismatchException e) {
-    		System.out.println("\nERROR: Invalid.  Please try again");
-    		input = userInput();
-    	}
+    	int input = scan.nextInt();
     	scan.close();
-		return input;
+    	return input;
     }
     
     /**
@@ -75,11 +64,14 @@ public class Main {
      * @returns none
      */
     public static void screenSelect(int input) {
-    	if(input == 0) return;
+    	if(input == 0) {
+    		System.out.println("Quitting now...");
+    		return;
+    	}
     	
     	System.out.println(LINE);
     	if(input == 1) NutritionLog.main(null);
-    	else if(input == 2) BMI.main(null);
+    	else if(input == 2) Bmi.main(null);
     	else if(input == 3) PaceCalculator.main(null);
     	else if(input == 4) SplitCalculator.main(null);
     	else if(input == 5) NutritionFacts.main(null);
@@ -96,7 +88,17 @@ public class Main {
     public static void main(String[] args) {
         printTitle();
         printOptions();
-        int input = userInput();
+        
+        int input = -1;
+        while(true) {
+	        try {
+	        	input = userInput();
+	        	break;
+	        }
+	        catch(InputMismatchException e) {
+	        	System.out.println("\nERROR: Invalid.  Please try again");
+	        }
+        }
         screenSelect(input);
     }
 }
