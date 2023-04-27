@@ -26,7 +26,7 @@ public class MainTest {
 	public void testPrints() throws IOException {
 		Testing.runTest(directory,"prints");
 		// TODO: get a general Testing class working with compare() and runTest()
-		// that way I dont have to copy those methods to every test file w/ slight changes
+		// that way I don't have to copy those methods to every test file w/ slight changes
 	}
 	
 	@Test

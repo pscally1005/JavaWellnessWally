@@ -1,4 +1,5 @@
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 // Main.java is the main file to run all the different screens of Wellness Wally
@@ -48,11 +49,18 @@ public class Main {
      * @throws InputMismatchException if input is not an int
      * @returns int input of the user from command line
      */ 
-	public static int userInput() throws InputMismatchException {     	
+	public static int userInput() {     	
     	Scanner scan = new Scanner(System.in);
-    	int input = scan.nextInt();
-    	scan.close();
-    	return input;
+    	try {
+    		int input = scan.nextInt();
+    		scan.close();
+    		// FIX!!
+    		if(input < 0 || input > 5) throw new InputMismatchException();
+        	return input;
+    	} catch(InputMismatchException e) {
+    		System.out.println("ERROR: Invalid.  Please try again");
+    		return userInput();
+    	}
     }
     
     /**
@@ -88,17 +96,7 @@ public class Main {
     public static void main(String[] args) {
         printTitle();
         printOptions();
-        
-        int input = -1;
-        while(true) {
-	        try {
-	        	input = userInput();
-	        	break;
-	        }
-	        catch(InputMismatchException e) {
-	        	System.out.println("\nERROR: Invalid.  Please try again");
-	        }
-        }
+        int input = userInput();
         screenSelect(input);
     }
 }
