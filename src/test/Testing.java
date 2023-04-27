@@ -55,12 +55,12 @@ public class Testing {
 		 * @throws IOException if filename is invalid
 		 * @returns none
 		 */
-		static void runTest(String directory, String filename) throws IOException {
+		static void runTest(String filename) throws IOException {
 			InputStream in = System.in;
 			PrintStream out = System.out;
-			String inFilename = "data/"+directory+"/"+filename+".test"; // Input filename: [filename].test here  
-			String expectedFilename = "data/"+directory+"/"+filename+".expected"; // Expected result filename: [filename].expected
-			String outFilename = "data/"+directory+"/"+filename+".out"; // Output filename: [filename].out
+			String inFilename = "data/"+"/"+filename+".test"; // Input filename: [filename].test here  
+			String expectedFilename = "data/"+"/"+filename+".expected"; // Expected result filename: [filename].expected
+			String outFilename = "data/"+"/"+filename+".out"; // Output filename: [filename].out
 			BufferedInputStream is = new BufferedInputStream(new FileInputStream(inFilename));
 			System.setIn(is); // redirects standard input to a file, [filename].test 
 			PrintStream os = new PrintStream(new FileOutputStream(outFilename));

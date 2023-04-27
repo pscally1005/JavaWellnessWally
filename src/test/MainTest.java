@@ -14,8 +14,6 @@ import org.junit.Test;
 
 public class MainTest {
 	
-	private final String directory = "Main";
-	
 	@Test
 	public void testMainConstructor() {
 		Main main = new Main();
@@ -23,24 +21,13 @@ public class MainTest {
 	}
 
 	@Test
-	public void testPrints() throws IOException {
-		Testing.runTest(directory,"prints");
-		// TODO: get a general Testing class working with compare() and runTest()
-		// that way I don't have to copy those methods to every test file w/ slight changes
+	public void testQuit() throws IOException {
+		Testing.runTest("main_quit");
 	}
 	
 	@Test
-	public void testUserInput() throws IOException {
-	}
-	
-	@Test
-	public void testScreenSelect() {
-		
-	}
-	
-	@Test
-	public void testMain() {
-		
+	public void testValidUserInput() throws IOException {
+		Testing.runTest("main_launchNutritionLog");
 	}
 	
 }

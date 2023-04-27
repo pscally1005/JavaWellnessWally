@@ -1,5 +1,3 @@
-import java.util.InputMismatchException;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 // Main.java is the main file to run all the different screens of Wellness Wally
@@ -8,37 +6,36 @@ public class Main {
 	final static String LINE = "-------------------";
 
     /**
-     * Prints the title at the top of Main
      * @requires none
      * @modifies none
      * @effects none
      * @throws none
-     * @returns none
+     * @returns String title at the top of main
      */
-    public static void printTitle() {
-        System.out.println("##################");
-        System.out.println("#                #");
-        System.out.println("# WELLNESS WALLY #");
-        System.out.println("#                #");
-        System.out.println("##################");
+    public static String title() {
+        String title = "##################\n"
+        			 + "#                #\n"
+        			 + "# WELLNESS WALLY #\n"
+        			 + "#                #\n"
+        			 + "##################\n";
+        return title;
     }
 
     /**
-     * Prints the screen options
      * @requires none
      * @modifies none
      * @effects none
      * @throws none
-     * @returns none
+     * @returns String options of Main screen
      */
-    public static void printOptions() {
-        System.out.println();
-        System.out.println("1: Nutrition Log");
-        System.out.println("2: BMI Calculator");
-        System.out.println("3: Pace Calculator");
-        System.out.println("4: Split Calculator");
-        System.out.println("5: Nutrition Facts Calculator");
-        System.out.println("0: Exit\n");
+    public static String options() {
+    	String options = "1: Nutrition Log\n"
+    				   + "2: BMI Calculator\n"
+        			   + "3: Pace Calculator\n"
+        			   + "4: Split Calculator\n"
+        			   + "5: Nutrition Facts Calculator\n"
+        			   + "0: Exit\n";
+    	return options;
     }
 
     /**
@@ -46,21 +43,35 @@ public class Main {
      * @requires none
      * @modifies none
      * @effects none
-     * @throws InputMismatchException if input is not an int
+     * @throws none
      * @returns int input of the user from command line
+     * https://stackoverflow.com/questions/18804872/only-let-users-input-positive-integers-no-decimals-or-strings
      */ 
-	public static int userInput() {     	
-    	Scanner scan = new Scanner(System.in);
-    	try {
-    		int input = scan.nextInt();
-    		scan.close();
-    		// FIX!!
-    		if(input < 0 || input > 5) throw new InputMismatchException();
-        	return input;
-    	} catch(InputMismatchException e) {
-    		System.out.println("ERROR: Invalid.  Please try again");
-    		return userInput();
-    	}
+	public static int userInput() {     
+		String prompt = "Enter a number to select: ";
+		String error = "\nERROR: Invalid input.  Please try again";
+		System.out.print(prompt);
+		
+		int input = -1;
+		Scanner scan = new Scanner(System.in);
+		
+		while(true) {
+		  try {
+		    input = Integer.valueOf(scan.nextLine());
+		    if (input < 0 || input > 5) {
+		      System.out.println(error);
+		      System.out.print(prompt);
+		    } else break;
+		  } catch(NumberFormatException e) {
+		      System.out.println(error);
+		      System.out.print(prompt);
+		  }
+
+		}
+		
+		System.out.println();
+		scan.close();
+		return input;
     }
     
     /**
@@ -68,10 +79,10 @@ public class Main {
      * @requires int input
      * @modifies none
      * @effects none
-     * @throws none
+     * @throws IllegalArgumentException if input is invalid
      * @returns none
      */
-    public static void screenSelect(int input) {
+    public static void screenSelect(int input) throws IllegalArgumentException {
     	if(input == 0) {
     		System.out.println("Quitting now...");
     		return;
@@ -83,6 +94,7 @@ public class Main {
     	else if(input == 3) PaceCalculator.main(null);
     	else if(input == 4) SplitCalculator.main(null);
     	else if(input == 5) NutritionFacts.main(null);
+    	else throw new IllegalArgumentException();
     }
 
     /**
@@ -94,8 +106,8 @@ public class Main {
      * @returns none
      */
     public static void main(String[] args) {
-        printTitle();
-        printOptions();
+        System.out.println(title());
+        System.out.println(options());
         int input = userInput();
         screenSelect(input);
     }
