@@ -28,6 +28,7 @@ public class MainTest {
 	@Test
 	public void testValidUserInput() throws IOException {
 		Testing.runTest("main_launchNutritionLog");
+		Testing.runTest("main_launchBmi");
 	}
 	
 }

@@ -10,7 +10,7 @@ public class SplitCalculator {
      * @returns none
 	 */
 	public static void main(String[] args) {
-		System.out.println("\nSPLIT CALCULATOR");
+		System.out.println("SPLIT CALCULATOR");
 	}
 
 }

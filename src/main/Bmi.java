@@ -10,7 +10,7 @@ public class Bmi {
      * @returns none
 	 */
 	public static void main(String[] args) {
-		System.out.println("\nBMI CALCULATOR");
+		System.out.println("BMI CALCULATOR");
 	}
 
 }

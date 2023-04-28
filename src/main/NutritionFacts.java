@@ -10,7 +10,7 @@ public class NutritionFacts {
      * @returns none
 	 */
 	public static void main(String[] args) {
-		System.out.println("\nNUTRITION FACTS GENERATOR");
+		System.out.println("NUTRITION FACTS GENERATOR");
 	}
 
 }
