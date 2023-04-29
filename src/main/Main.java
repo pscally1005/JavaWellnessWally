@@ -1,3 +1,7 @@
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.Scanner;
 
 // Main.java is the main file to run all the different screens of Wellness Wally
@@ -33,7 +37,7 @@ public class Main {
     				   + "2: BMI Calculator\n"
         			   + "3: Pace Calculator\n"
         			   + "4: Split Calculator\n"
-        			   + "5: Nutrition Facts Calculator\n"
+        			   + "5: Nutrition Facts Generator\n"
         			   + "0: Exit\n";
     	return options;
     }
@@ -58,7 +62,8 @@ public class Main {
 		while(true) {
 		  try {
 		    input = Integer.valueOf(scan.nextLine());
-		    if (input < 0 || input > 5) {
+		    if (input < 0 
+		    		|| input > 5) {
 		      System.out.println(error);
 		      System.out.print(prompt);
 		    } else break;
@@ -77,8 +82,7 @@ public class Main {
     	else if(input == 3) System.out.println("Launching Pace Calculator...");
     	else if(input == 4) System.out.println("Launching Split Calculator...");
     	else if(input == 5) System.out.println("Launching Nutrition Facts Generator...");
-    	else if(input == 0) System.out.println("Quitting now...");
-    	else throw new IllegalArgumentException();
+    	else /*if(input == 0)*/ System.out.println("Quitting now...");
 		
 		return input;
     }
@@ -110,10 +114,16 @@ public class Main {
      * @throws none
      * @returns none
      */
+    @ExcludeFromJacocoGeneratedReport
     public static void main(String[] args) {
         System.out.println(title());
         System.out.println(options());
         int input = userInput();
         launch(input);
     }
+    
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.METHOD)
+    public @interface ExcludeFromJacocoGeneratedReport {}
+    
 }
