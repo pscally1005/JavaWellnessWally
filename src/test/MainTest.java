@@ -1,34 +1,43 @@
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
+import java.util.NoSuchElementException;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class MainTest {
 	
-	@Test
-	public void testMainConstructor() {
-		Main main = new Main();
+	private static Main main;
+	private static Testing testing;
+	private final static String directory = "Main";
+	
+	@BeforeClass
+	public static void setUp() {
+		main = new Main();
 		assertNotNull(main);
-	}
-
-	@Test
-	public void testQuit() throws IOException {
-		Testing.runTest("main_quit");
+		testing = new Testing(directory);
 	}
 	
 	@Test
 	public void testValidUserInput() throws IOException {
-		Testing.runTest("main_launchNutritionLog");
-		Testing.runTest("main_launchBmi");
+		testing.runTest(() -> Main.userInput(), "launchNutritionLog");
+		testing.runTest(() -> Main.userInput(), "launchBmi");
+		testing.runTest(() -> Main.userInput(), "launchPace");
+		testing.runTest(() -> Main.userInput(), "launchSplit");
+		testing.runTest(() -> Main.userInput(), "launchFacts");
+		testing.runTest(() -> Main.userInput(), "quit");
+	}
+	
+	@Test(expected = NoSuchElementException.class)
+	public void testInvalidUserInput() throws IOException {
+		testing.runTest(() -> Main.userInput(), "invalid1");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidLaunch() {
+		Main.launch(-1);
+		Main.launch(6);
 	}
 	
 }

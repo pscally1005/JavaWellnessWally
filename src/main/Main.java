@@ -71,6 +71,15 @@ public class Main {
 		
 		System.out.println();
 		scan.close();
+		
+    	if(input == 1) System.out.println("Launching Nutrition Log...");
+    	else if(input == 2) System.out.println("Launching BMI Calculator...");
+    	else if(input == 3) System.out.println("Launching Pace Calculator...");
+    	else if(input == 4) System.out.println("Launching Split Calculator...");
+    	else if(input == 5) System.out.println("Launching Nutrition Facts Generator...");
+    	else if(input == 0) System.out.println("Quitting now...");
+    	else throw new IllegalArgumentException();
+		
 		return input;
     }
     
@@ -82,18 +91,14 @@ public class Main {
      * @throws IllegalArgumentException if input is invalid
      * @returns none
      */
-    public static void screenSelect(int input) throws IllegalArgumentException {
-    	if(input == 0) {
-    		System.out.println("Quitting now...");
-    		return;
-    	}
-    	
+    public static void launch(int input) throws IllegalArgumentException {   	
     	System.out.println(LINE);
     	if(input == 1) NutritionLog.main(null);
     	else if(input == 2) Bmi.main(null);
     	else if(input == 3) PaceCalculator.main(null);
     	else if(input == 4) SplitCalculator.main(null);
     	else if(input == 5) NutritionFacts.main(null);
+    	else if(input == 0) return;
     	else throw new IllegalArgumentException();
     }
 
@@ -109,6 +114,6 @@ public class Main {
         System.out.println(title());
         System.out.println(options());
         int input = userInput();
-        screenSelect(input);
+        launch(input);
     }
 }

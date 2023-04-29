@@ -10,7 +10,7 @@ public class PaceCalculator {
      * @returns none
 	 */
 	public static void main(String[] args) {
-		System.out.println("\nPACE CALCULATOR");
+		System.out.println("PACE CALCULATOR");
 	}
 
 }
