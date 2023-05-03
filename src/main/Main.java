@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -7,7 +8,9 @@ import java.util.Scanner;
 // Main.java is the main file to run all the different screens of Wellness Wally
 public class Main {
 
-	final static String LINE = "-------------------";
+	public final static String LINE = "-------------------";
+	public final static String ERROR = "\nERROR: Invalid input.  Please try again";
+	public final static String EXIT = "Exiting to main menu...";
 
     /**
      * @requires none
@@ -53,10 +56,10 @@ public class Main {
      */ 
 	public static int userInput() {     
 		String prompt = "Enter a number to select: ";
-		String error = "\nERROR: Invalid input.  Please try again";
 		System.out.print(prompt);
 		
 		int input = -1;
+		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		
 		while(true) {
@@ -64,18 +67,17 @@ public class Main {
 		    input = Integer.valueOf(scan.nextLine());
 		    if (input < 0 
 		    		|| input > 5) {
-		      System.out.println(error);
+		      System.out.println(ERROR);
 		      System.out.print(prompt);
 		    } else break;
 		  } catch(NumberFormatException e) {
-		      System.out.println(error);
+		      System.out.println(ERROR);
 		      System.out.print(prompt);
 		  }
 
 		}
 		
 		System.out.println();
-		scan.close();
 		
     	if(input == 1) System.out.println("Launching Nutrition Log...");
     	else if(input == 2) System.out.println("Launching BMI Calculator...");
@@ -93,9 +95,10 @@ public class Main {
      * @modifies none
      * @effects none
      * @throws IllegalArgumentException if input is invalid
+     * @throws IOException 
      * @returns none
      */
-    public static void launch(int input) throws IllegalArgumentException {   	
+    public static void launch(int input) throws IllegalArgumentException, IOException {   	
     	System.out.println(LINE);
     	if(input == 1) NutritionLog.main(null);
     	else if(input == 2) Bmi.main(null);
@@ -111,11 +114,11 @@ public class Main {
      * @requires args
      * @modifies none
      * @effects none
-     * @throws none
+     * @throws IllegalArgumentException, IOException
      * @returns none
      */
     @ExcludeFromJacocoGeneratedReport
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IllegalArgumentException, IOException {
         System.out.println(title());
         System.out.println(options());
         int input = userInput();

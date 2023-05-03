@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-import org.w3c.dom.Entity;
-
 public class Testing {
 
 	// compare() and runTests() copied from CampusPathsTest (PSoft hw7)
@@ -74,12 +72,12 @@ public class Testing {
 		PrintStream os = new PrintStream(new FileOutputStream(outFilename));
 		System.setOut(os); // redirects standard output to a file, [filename].out 
 		
-//			Main.main(null); // Call to YOUR main. May have to rename.
 		r.run();
 		
 		System.setIn(in); // restores standard input
 		System.setOut(out); // restores standard output
-		assertTrue(compare(expectedFilename, outFilename)); 		
+		assertTrue(compare(expectedFilename, outFilename)); 	
+		
 	}
 	
 }

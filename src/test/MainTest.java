@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -83,7 +82,7 @@ public class MainTest {
 	}
 	
 	@Test
-	public void testValidLaunch() {
+	public void testValidLaunch() throws IOException {
 		Main.launch(1);
 		Main.launch(2);
 		Main.launch(3);
@@ -91,10 +90,5 @@ public class MainTest {
 		Main.launch(5);
 		Main.launch(0);
 	}
-	
-//	@Test
-//	public void testMain() {
-//		Main.main(null);
-//	}
 	
 }
