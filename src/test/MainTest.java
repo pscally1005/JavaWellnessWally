@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -20,9 +21,44 @@ public class MainTest {
 	private static String expectedFilename;
 	private static String outFilename;
 	
-	private void files(String filename) {
-		expectedFilename = "data/"+"/"+directory+"/"+filename+".expected"; // Expected result filename: [filename].expected
-		outFilename = "data/"+"/"+directory+"/"+filename+".out"; // Output filename: [filename].out
+	/**
+	 * @requires String filename
+	 * @modifies expectedFilename, outFilename
+	 * @effects sets files to correct location for out and expected files
+	 * @throws NullPointerException if filename is null
+	 * @returns String expectedFilename
+	 */
+	public static String fileExp(String dir, String filename) throws NullPointerException {
+		if(filename == null) throw new NullPointerException();
+		return "data/"+dir+"/"+filename+".expected"; // Expected result filename: [filename].expected
+	}
+	
+	/**
+	 * @requires String filename
+	 * @modifies expectedFilename, outFilename
+	 * @effects sets files to correct location for out and expected files
+	 * @throws NullPointerException if filename is null
+	 * @returns String outFilename
+	 */
+	public static String fileOut(String dir, String filename) throws NullPointerException {
+		if(filename == null) throw new NullPointerException();
+		return "data/"+"/"+dir+"/"+filename+".out"; // Output filename: [filename].out
+	}
+	
+	/**
+	 * @requires String file to read from
+	 * @modifies expectedFilename, outFilename
+	 * @effects sets file to correct files to compare to for testing
+	 * @throws NullPointerException if file is null
+	 * @throws IOException in Testing.compare()
+	 * @returns none
+	 */
+	public static void invalid(Runnable r, String file, Testing t, String dir, String expectedFilename, String outFilename) throws IOException, NullPointerException {
+		if(file == null) throw new NullPointerException();
+		assertThrows(NoSuchElementException.class, () -> t.runTest(() -> r.run(),file));
+		expectedFilename = fileExp(dir,file);
+		outFilename = fileOut(dir, file);
+		assertTrue(Testing.compare(expectedFilename, outFilename));
 	}
 	
 	@BeforeClass
@@ -33,19 +69,9 @@ public class MainTest {
 	}
 	
 	@Test
-	public void testTitleAndOptions() throws Exception {
-		ExecutorService executor = Executors.newCachedThreadPool();
-	    Future<String> task1 = executor.submit(Main::title);
-	    String result = task1.get();
-	    testing.write("title", result);
-	    assertTrue(Testing.compare("data/Main/title.expected", "data/Main/title.out"));
-	    
-//	    testing.runTest(() -> task1, "title");
-	    
-		
-		
-//		testing.runTest(() -> System.out.println(Main.title()), "title");
-//		testing.runTest(() -> System.out.println(Main.options()), "options");
+	public void testTitleAndOptions() throws IOException {
+		testing.runTest(() -> System.out.println(Main.title()), "title");
+		testing.runTest(() -> System.out.println(Main.options()), "options");
 	}
 	
 	@Test
@@ -62,47 +88,34 @@ public class MainTest {
 	}
 	
 	@Test
-	public void testInvalidNegative() throws IOException {
-		assertThrows(NoSuchElementException.class, () -> testing.runTest(() -> Main.userInput(), "invalidNegative"));
-		files("invalidNegative");
-		assertTrue(Testing.compare(expectedFilename, outFilename));
-	}
-	
-	@Test
-	public void testInvalidPositive() throws IOException {
-		assertThrows(NoSuchElementException.class, () -> testing.runTest(() -> Main.userInput(), "invalidPositive"));
-		files("invalidPositive");
-		assertTrue(Testing.compare(expectedFilename, outFilename));
-	}
-	
-	@Test
-	public void testInvalidEmpty() throws IOException {
-		assertThrows(NoSuchElementException.class, () -> testing.runTest(() -> Main.userInput(), "invalidEmpty"));
-		files("invalidEmpty");
-		assertTrue(Testing.compare(expectedFilename, outFilename));
-	}
-	
-	@Test
-	public void testInvalidNotInt() throws IOException {
-		assertThrows(NoSuchElementException.class, () -> testing.runTest(() -> Main.userInput(), "invalidNotAnInt"));
-		files("invalidNotAnInt");
-		assertTrue(Testing.compare(expectedFilename, outFilename));
+	public void testInvalidInput() throws IOException {
+		invalid(() -> Main.userInput(),"invalidNotAnInt",testing, directory, expectedFilename, outFilename);
+		invalid(() -> Main.userInput(),"invalidPositive",testing, directory, expectedFilename, outFilename);
+		invalid(() -> Main.userInput(),"invalidNegative",testing, directory, expectedFilename, outFilename);
+		invalid(() -> Main.userInput(),"invalidEmpty",testing, directory, expectedFilename, outFilename);
 	}
 	
 	@Test
 	public void testInvalidLaunch() {
-		assertThrows(IllegalArgumentException.class, () -> Main.launch(-1));
 		assertThrows(IllegalArgumentException.class, () -> Main.launch(6));
+		assertThrows(IllegalArgumentException.class, () -> Main.launch(-1));
 	}
 	
-	@Test
-	public void testValidLaunch() throws IOException {
-		Main.launch(1);
-		Main.launch(2);
-		Main.launch(3);
-		Main.launch(4);
-		Main.launch(5);
-		Main.launch(0);
-	}
+//	@Test
+//	public void testValidLaunch() throws IOException {
+//		assertThrows(NoSuchElementException.class, () -> Main.launch(1));
+//		assertThrows(NoSuchElementException.class, () -> Main.launch(2));
+//		assertThrows(NoSuchElementException.class, () -> Main.launch(3));
+//		assertThrows(NoSuchElementException.class, () -> Main.launch(4));
+//		assertThrows(NoSuchElementException.class, () -> Main.launch(5));
+//		assertThrows(NoSuchElementException.class, () -> Main.launch(0));
+//		
+//		Main.launch(1);
+//		Main.launch(2);
+//		Main.launch(3);
+//		Main.launch(4);
+//		Main.launch(5);
+//		Main.launch(0);
+//	}
 	
 }

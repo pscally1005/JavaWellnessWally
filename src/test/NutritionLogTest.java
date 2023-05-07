@@ -1,9 +1,12 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
@@ -15,6 +18,8 @@ public class NutritionLogTest {
 	private static NutritionLog nutritionLog;
 	private static Testing testing;
 	private final static String directory = "NutritionLog";
+	private static String expectedFilename;
+	private static String outFilename;
 	
 	@BeforeClass
 	public static void setUp() {
@@ -35,11 +40,11 @@ public class NutritionLogTest {
 	
 	@Test
 	public void testInvalidNum() throws IOException {
-		testing.runTest(() -> NutritionLog.enterNum(), "invalidNotInt");
-		testing.runTest(() -> NutritionLog.enterNum(), "invalidPositive");
-		testing.runTest(() -> NutritionLog.enterNum(), "invalidNegative");	
-		testing.runTest(() -> NutritionLog.enterNum(), "invalidEmpty");
-		testing.runTest(() -> NutritionLog.enterNum(), "invalidZero");
+		MainTest.invalid(() -> NutritionLog.enterNum(), "invalidNotInt", testing, directory, expectedFilename, outFilename);
+		MainTest.invalid(() -> NutritionLog.enterNum(), "invalidPositive", testing, directory, expectedFilename, outFilename);
+		MainTest.invalid(() -> NutritionLog.enterNum(), "invalidNegative", testing, directory, expectedFilename, outFilename);
+		MainTest.invalid(() -> NutritionLog.enterNum(), "invalidEmpty", testing, directory, expectedFilename, outFilename);
+		MainTest.invalid(() -> NutritionLog.enterNum(), "invalidZero", testing, directory, expectedFilename, outFilename);
 	}
 	
 	@Test

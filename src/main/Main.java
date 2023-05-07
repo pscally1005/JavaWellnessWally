@@ -3,6 +3,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
 
@@ -45,38 +46,51 @@ public class Main /*implements Callable<Object>*/ {
         			   + "0: Exit\n";
     	return options;
     }
+    
+    /**
+     * @requires Scanner scan, low and high ints representing bounds to check
+     * @requires String prompt telling user the instructions
+     * @modifies none
+     * @effects none
+     * @throws NoSuchElementException if scanner has no next
+     * @returns int valid user input
+     */
+    public static int intInput(Scanner scan, int low, int high, String prompt) throws NoSuchElementException {
+    	int input = -1;
+		while(true) {
+		  try {
+		    input = Integer.valueOf(scan.nextLine());
+		    if (input < low
+		    		|| input > high) {
+		      System.out.println(Main.ERROR);
+		      System.out.print(prompt);
+		    } else break;
+		  } catch(NumberFormatException e) {
+		      System.out.println(Main.ERROR);
+		      System.out.print(prompt);
+		  }
+
+		}
+		return input;
+    }
 
     /**
      * User inputs an integer to choose a screen
      * @requires none
      * @modifies none
      * @effects none
-     * @throws none
+     * @throws NoSuchElementException in intInput()
      * @returns int input of the user from command line
      * https://stackoverflow.com/questions/18804872/only-let-users-input-positive-integers-no-decimals-or-strings
      */ 
-	public static int userInput() {     
+	public static int userInput() throws NoSuchElementException {     
 		String prompt = "Enter a number to select: ";
 		System.out.print(prompt);
 		
 		int input = -1;
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
-		
-		while(true) {
-		  try {
-		    input = Integer.valueOf(scan.nextLine());
-		    if (input < 0 
-		    		|| input > 5) {
-		      System.out.println(ERROR);
-		      System.out.print(prompt);
-		    } else break;
-		  } catch(NumberFormatException e) {
-		      System.out.println(ERROR);
-		      System.out.print(prompt);
-		  }
-
-		}
+		input = intInput(scan,0,5,prompt);
 		
 		System.out.println();
 		
@@ -100,14 +114,16 @@ public class Main /*implements Callable<Object>*/ {
      * @returns none
      */
     public static void launch(int input) throws IllegalArgumentException, IOException {   	
+    	if(input > 5) throw new IllegalArgumentException();
+    	if(input < 0) throw new IllegalArgumentException();
+    	
     	System.out.println(LINE);
     	if(input == 1) NutritionLog.main(null);
     	else if(input == 2) Bmi.main(null);
     	else if(input == 3) PaceCalculator.main(null);
     	else if(input == 4) SplitCalculator.main(null);
     	else if(input == 5) NutritionFacts.main(null);
-    	else if(input == 0) return;
-    	else throw new IllegalArgumentException();
+    	else /*if(input == 0)*/ return;
     }
 
     /**
@@ -129,27 +145,5 @@ public class Main /*implements Callable<Object>*/ {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
     public @interface ExcludeFromJacocoGeneratedReport {}
-
-//    /**
-//     * @requires String method representing method to be called
-//     * @modifies none
-//     * @effects none
-//     * @throws NullPointerException if method == null
-//     * @throws IllegalArgumentException if method doesn't correspond to anything
-//     * @return
-//     * @throws Exception
-//     */
-//	public Object call(String method) throws NullPointerException, IllegalArgumentException {
-//		if(method == null) throw new NullPointerException();
-//		else if(method.equals("title")) return Main.title();
-//		else if(method.equals("options")) return Main.options();
-//		else if(method.equals("userInput")) return Main.userInput();
-//		throw new IllegalArgumentException();
-//	}
-//
-//	@Override
-//	public Object call() throws Exception {
-//		return new Object();
-//	}
     
 }

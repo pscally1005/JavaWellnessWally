@@ -2,6 +2,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class Bmi {
 	
@@ -26,12 +28,41 @@ public class Bmi {
 	 * @returns true if user selects metric units, false otherwise
 	 */
 	public static boolean isMetric() {
-		System.out.println("Enter 1 to use Imperial units (in,lbs)");
-		System.out.println("Enter 2 to use Metric units (m,g)");
-		System.out.print("\nPlease enter a selection: ");
+		String prompt = "Enter 1 to use Imperial units (in,lbs)"
+			+ "\nEnter 2 to use Metric units (m,g)"
+			+ "\n\nPlease enter a selection: ";
+		System.out.print(prompt);
 		
 		boolean metric = true;
+		int input = -1;
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
 		
+		while(true) {
+		  try {
+		    input = Integer.valueOf(scan.nextLine());
+		    if (input < 1 
+		    		|| input > 2) {
+		      System.out.println(Main.ERROR);
+		      System.out.print(prompt);
+		    } else break;
+		  } catch(NumberFormatException e) {
+		      System.out.println(Main.ERROR);
+		      System.out.print(prompt);
+		  } catch(NoSuchElementException e) { 
+			  input = 0;
+			  break;
+		  }
+
+		}
+		
+		if(input == 2) {
+			metric = true;
+			System.out.println("\nUsing Metric units...");
+		} else {
+			metric = false;
+			System.out.println("\nUsing Imperial units...");
+		}
 		return metric;
 	}
 	

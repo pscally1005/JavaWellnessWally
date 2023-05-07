@@ -31,37 +31,19 @@ public class NutritionLog {
 	 * @requires none
 	 * @modifies none
 	 * @effects none
-	 * @throws none
+	 * @throws NoSuchElementException in Main.intInput();
 	 * @returns int rating that user inputted
 	 */
-	public static int enterNum() {
+	public static int enterNum() throws NoSuchElementException {
 		String prompt = "Please rate your nutrition for today from 1 to 5: ";
 		System.out.print(prompt);
 		
 		int input = -1;
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
-		
-		while(true) {
-		  try {
-		    input = Integer.valueOf(scan.nextLine());
-		    if (input < 1 
-		    		|| input > 5) {
-		      System.out.println(Main.ERROR);
-		      System.out.print(prompt);
-		    } else break;
-		  } catch(NumberFormatException e) {
-		      System.out.println(Main.ERROR);
-		      System.out.print(prompt);
-		  } catch(NoSuchElementException e) { 
-			  input = 0;
-			  break;
-		  }
+		input = Main.intInput(scan, 1, 5, prompt);
 
-		}
-		
 		System.out.println();
-		
 		return input;
 	}
 	
@@ -145,6 +127,7 @@ public class NutritionLog {
 		String desc = enterDesc(num);
 		writeToFile(num,desc);
 		if(!exit()) NutritionLog.main(null);
+		else Main.main(null);
 	}
 	
 	@Retention(RetentionPolicy.RUNTIME)
