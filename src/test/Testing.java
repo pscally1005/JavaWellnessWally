@@ -2,12 +2,17 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.Callable;
 
 public class Testing {
 
@@ -55,6 +60,7 @@ public class Testing {
 	}
 	
 	/**
+	 * @return 
 	 * @requries String filename
 	 * @modifies System.in, System.out
 	 * @effects sets up input and output for testing
@@ -77,7 +83,61 @@ public class Testing {
 		System.setIn(in); // restores standard input
 		System.setOut(out); // restores standard output
 		assertTrue(compare(expectedFilename, outFilename)); 	
+	}
+	
+	/**
+	 * @param <V>
+	 * @return 
+	 * @requries String filename
+	 * @modifies System.in, System.out
+	 * @effects sets up input and output for testing
+	 * @throws IOException if filename is invalid
+	 * @returns none
+	 */
+	<V> V runTest(Callable<V> c, String filename) throws IOException {
+		InputStream in = System.in;
+		PrintStream out = System.out;
+		String inFilename = "data/"+"/"+directory+"/"+filename+".test"; // Input filename: [filename].test here  
+		String expectedFilename = "data/"+"/"+directory+"/"+filename+".expected"; // Expected result filename: [filename].expected
+		String outFilename = "data/"+"/"+directory+"/"+filename+".out"; // Output filename: [filename].out
+		BufferedInputStream is = new BufferedInputStream(new FileInputStream(inFilename));
+		System.setIn(is); // redirects standard input to a file, [filename].test 
+		PrintStream os = new PrintStream(new FileOutputStream(outFilename));
+		System.setOut(os); // redirects standard output to a file, [filename].out 
 		
+//		r.run();
+		V ret = null;
+		try {
+			ret = c.call();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.setIn(in); // restores standard input
+		System.setOut(out); // restores standard output
+		assertTrue(compare(expectedFilename, outFilename)); 	
+		
+		return ret;		
+	}
+	
+	/**
+	 * Writes user description to a file
+	 * @requries String desc
+	 * @modifies none
+	 * @effects none
+	 * @throws IOException
+	 * @returns none
+	 */
+	public void write(String name, String str) throws IOException {
+		String filename = "data/"+directory+"/"+name+".out";
+		FileWriter fileWriter = new FileWriter(filename);
+		BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+		
+		bufferedWriter.write(str);
+		bufferedWriter.close();
+		System.out.println();
+	
 	}
 	
 }

@@ -1,18 +1,1 @@
-Enter a number to select: -------------------
-NUTRITION LOG
-
-This will allow you to rate your nutrition for today and why
-This data will be saved to a log file
-
-Please rate your nutrition for today from 1 to 5: 
-Please describe why you rated your day as a "0":
-
-Enter "Y" to stay on this screen, or anything else to return: -------------------
-BMI CALCULATOR
--------------------
-PACE CALCULATOR
--------------------
-SPLIT CALCULATOR
--------------------
-NUTRITION FACTS GENERATOR
--------------------
+Enter a number to select: 

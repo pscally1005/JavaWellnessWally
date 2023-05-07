@@ -4,6 +4,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,9 +33,19 @@ public class MainTest {
 	}
 	
 	@Test
-	public void testTitleAndOptions() throws IOException {
-		testing.runTest(() -> System.out.println(Main.title()), "title");
-		testing.runTest(() -> System.out.println(Main.options()), "options");
+	public void testTitleAndOptions() throws Exception {
+		ExecutorService executor = Executors.newCachedThreadPool();
+	    Future<String> task1 = executor.submit(Main::title);
+	    String result = task1.get();
+	    testing.write("title", result);
+	    assertTrue(Testing.compare("data/Main/title.expected", "data/Main/title.out"));
+	    
+//	    testing.runTest(() -> task1, "title");
+	    
+		
+		
+//		testing.runTest(() -> System.out.println(Main.title()), "title");
+//		testing.runTest(() -> System.out.println(Main.options()), "options");
 	}
 	
 	@Test

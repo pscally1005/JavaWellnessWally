@@ -4,9 +4,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
 
 // Main.java is the main file to run all the different screens of Wellness Wally
-public class Main {
+public class Main /*implements Callable<Object>*/ {
 
 	public final static String LINE = "-------------------";
 	public final static String ERROR = "\nERROR: Invalid input.  Please try again";
@@ -128,5 +129,27 @@ public class Main {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
     public @interface ExcludeFromJacocoGeneratedReport {}
+
+//    /**
+//     * @requires String method representing method to be called
+//     * @modifies none
+//     * @effects none
+//     * @throws NullPointerException if method == null
+//     * @throws IllegalArgumentException if method doesn't correspond to anything
+//     * @return
+//     * @throws Exception
+//     */
+//	public Object call(String method) throws NullPointerException, IllegalArgumentException {
+//		if(method == null) throw new NullPointerException();
+//		else if(method.equals("title")) return Main.title();
+//		else if(method.equals("options")) return Main.options();
+//		else if(method.equals("userInput")) return Main.userInput();
+//		throw new IllegalArgumentException();
+//	}
+//
+//	@Override
+//	public Object call() throws Exception {
+//		return new Object();
+//	}
     
 }
