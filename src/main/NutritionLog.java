@@ -38,10 +38,9 @@ public class NutritionLog {
 		String prompt = "Please rate your nutrition for today from 1 to 5: ";
 		System.out.print(prompt);
 		
-		int input = -1;
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
-		input = Main.intInput(scan, 1, 5, prompt);
+		int input = (int) Main.intInput(scan, 1, 5, prompt);
 
 		System.out.println();
 		return input;
@@ -56,12 +55,10 @@ public class NutritionLog {
 	 */
 	public static String enterDesc(int rating) {
 		System.out.println("Please describe why you rated your day as a \"" + rating + "\":");
-		try {
-			@SuppressWarnings("resource")
-			Scanner scan = new Scanner(System.in);
-			String input = scan.nextLine();
-			return input;
-		} catch(NoSuchElementException e) { return "empty"; }
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		String input = scan.nextLine();
+		return input;
 		
 	}
 	
@@ -99,17 +96,15 @@ public class NutritionLog {
 	 * @returns true if user wishes to exit, false if they want to stay
 	 */
 	public static boolean exit() {
-		try {
-			System.out.print("Enter \"Y\" to stay on this screen, or anything else to return: ");
-			@SuppressWarnings("resource")
-			Scanner scan = new Scanner(System.in);
-			String input = scan.nextLine();
-			if(input.equalsIgnoreCase("y")) return false;
-			else {
-				System.out.println(Main.EXIT);
-				return true;
-			}
-		} catch(NoSuchElementException e) { return true; }
+		System.out.print("Enter \"Y\" to stay on this screen, or anything else to return: ");
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		String input = scan.nextLine();
+		if(input.equalsIgnoreCase("y")) return false;
+		else {
+			System.out.println(Main.EXIT);
+			return true;
+		}
 	}
 
 	/**

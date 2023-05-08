@@ -5,7 +5,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.util.concurrent.Callable;
 
 // Main.java is the main file to run all the different screens of Wellness Wally
 public class Main /*implements Callable<Object>*/ {
@@ -59,17 +58,45 @@ public class Main /*implements Callable<Object>*/ {
     	int input = -1;
 		while(true) {
 		  try {
-		    input = Integer.valueOf(scan.nextLine());
-		    if (input < low
+			  String next = scan.nextLine();
+			  input = Integer.valueOf(next);
+			  if (input < low
 		    		|| input > high) {
-		      System.out.println(Main.ERROR);
-		      System.out.print(prompt);
-		    } else break;
-		  } catch(NumberFormatException e) {
-		      System.out.println(Main.ERROR);
-		      System.out.print(prompt);
-		  }
-
+			      System.out.println(Main.ERROR);
+			      System.out.print(prompt);
+			  } else break;
+		  	} catch(NumberFormatException e) {
+		  		System.out.println(Main.ERROR);
+		  		System.out.print(prompt);
+		  	}
+		}
+		return input;
+    }
+    
+    /**
+     * @param <T>
+     * @requires Scanner scan, low and high doubles representing bounds to check
+     * @requires String prompt telling user the instructions
+     * @modifies none
+     * @effects none
+     * @throws NoSuchElementException if scanner has no next
+     * @returns double valid user input
+     */
+    public static double doubleInput(Scanner scan, double low, double high, String prompt) throws NoSuchElementException {
+    	double input = -1;
+		while(true) {
+		  try {
+			  String next = scan.nextLine();
+			  input = Double.valueOf(next);
+			  if (input < low
+		    		|| input > high) {
+			      System.out.println(Main.ERROR);
+			      System.out.print(prompt);
+			  } else break;
+		  	} catch(NumberFormatException e) {
+		  		System.out.println(Main.ERROR);
+		  		System.out.print(prompt);
+		  	}
 		}
 		return input;
     }
@@ -87,10 +114,9 @@ public class Main /*implements Callable<Object>*/ {
 		String prompt = "Enter a number to select: ";
 		System.out.print(prompt);
 		
-		int input = -1;
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
-		input = intInput(scan,0,5,prompt);
+		int input = (int) intInput(scan,0,5,prompt);
 		
 		System.out.println();
 		
@@ -102,29 +128,7 @@ public class Main /*implements Callable<Object>*/ {
     	else /*if(input == 0)*/ System.out.println("Quitting now...");
 		
 		return input;
-    }
-    
-    /**
-     * Launches the java class (screen) corresponding to the input
-     * @requires int input
-     * @modifies none
-     * @effects none
-     * @throws IllegalArgumentException if input is invalid
-     * @throws IOException 
-     * @returns none
-     */
-    public static void launch(int input) throws IllegalArgumentException, IOException {   	
-    	if(input > 5) throw new IllegalArgumentException();
-    	if(input < 0) throw new IllegalArgumentException();
-    	
-    	System.out.println(LINE);
-    	if(input == 1) NutritionLog.main(null);
-    	else if(input == 2) Bmi.main(null);
-    	else if(input == 3) PaceCalculator.main(null);
-    	else if(input == 4) SplitCalculator.main(null);
-    	else if(input == 5) NutritionFacts.main(null);
-    	else /*if(input == 0)*/ return;
-    }
+	}
 
     /**
      * Main method for the entire program
@@ -139,7 +143,13 @@ public class Main /*implements Callable<Object>*/ {
         System.out.println(title());
         System.out.println(options());
         int input = userInput();
-        launch(input);
+        
+        System.out.println(LINE);
+    	if(input == 1) NutritionLog.main(null);
+    	else if(input == 2) Bmi.main(null);
+    	else if(input == 3) PaceCalculator.main(null);
+    	else if(input == 4) SplitCalculator.main(null);
+    	else if(input == 5) NutritionFacts.main(null);
     }
     
     @Retention(RetentionPolicy.RUNTIME)

@@ -2,10 +2,14 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.NoSuchElementException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Scanner;
 
 public class Bmi {
+	
+	public static double HEIGHT_TO_METRIC = 0.0254;
+	public static double WEIGHT_TO_METRIC = 0.45351473922;
 	
 	/**
 	 * @requires none
@@ -29,7 +33,7 @@ public class Bmi {
 	 */
 	public static boolean isMetric() {
 		String prompt = "Enter 1 to use Imperial units (in,lbs)"
-			+ "\nEnter 2 to use Metric units (m,g)"
+			+ "\nEnter 2 to use Metric units (cm,kg)"
 			+ "\n\nPlease enter a selection: ";
 		System.out.print(prompt);
 		
@@ -37,24 +41,7 @@ public class Bmi {
 		int input = -1;
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
-		
-		while(true) {
-		  try {
-		    input = Integer.valueOf(scan.nextLine());
-		    if (input < 1 
-		    		|| input > 2) {
-		      System.out.println(Main.ERROR);
-		      System.out.print(prompt);
-		    } else break;
-		  } catch(NumberFormatException e) {
-		      System.out.println(Main.ERROR);
-		      System.out.print(prompt);
-		  } catch(NoSuchElementException e) { 
-			  input = 0;
-			  break;
-		  }
-
-		}
+		input = (int) Main.intInput(scan, 1, 2, prompt);
 		
 		if(input == 2) {
 			metric = true;
@@ -74,7 +61,20 @@ public class Bmi {
 	 * @returns double height that user enters
 	 */
 	public static double enterHeight(boolean metric) {
-		return 1.0;
+		String prompt = "Please enter your height in ";		
+		if(metric) prompt += "centimeters: ";
+		else prompt += "inches: ";
+		System.out.print(prompt);
+		
+		Scanner scan = new Scanner(System.in);
+		double height = (double) Main.doubleInput(scan, 0.0, Double.MAX_VALUE, prompt);
+		
+		// convert height to meters
+		if(metric) height /= 100;
+		else height *= HEIGHT_TO_METRIC;
+		
+		System.out.println();
+		return height;
 	}
 	
 	/**
@@ -84,32 +84,68 @@ public class Bmi {
 	 * @throws none
 	 * @returns double weight that user enters
 	 */
-	public static double enterWeight(boolean metric) {
-		return 1.0;
+	public static double enterWeight(boolean metric) {	
+		String prompt = "Please enter your weight in ";	
+		if(metric == true) prompt += "kilograms: ";
+		else prompt += "pounds: ";
+		System.out.print(prompt);
+		
+		Scanner scan = new Scanner(System.in);
+		double weight = (double) Main.doubleInput(scan, 0.0, Double.MAX_VALUE, prompt);
+		
+		// convert weight to kilograms
+		if(!metric) weight *= WEIGHT_TO_METRIC;
+		
+		System.out.println();
+		return weight;
+	}
+	
+	/**
+	 * @requires double value and int places to round to
+	 * @modifies none
+	 * @effects none
+	 * @throws IllegalArgumentException if places < 0
+	 * @return double rounded value
+	 */
+	public static double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    BigDecimal bd = BigDecimal.valueOf(value);
+	    bd = bd.setScale(places, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
 	}
 	
 	/**
 	 * @requires boolean metric representing units, double height and weight
 	 * @modifies none
 	 * @effects none
-	 * @throws NullPointerException if height or weight are null
-	 * @throws IllegalArgumentException if height or weight are < 0
+	 * @throws IllegalArgumentException if height or weight are <= 0
 	 * @returns double representing the user's BMI
 	 */
-	public static double calcBmi(boolean metric, double height, double weight) throws NullPointerException, IllegalArgumentException {
-		return 0.0;
+	public static double calcBmi(double height, double weight) throws IllegalArgumentException {
+		if(height <= 0 || weight <= 0) throw new IllegalArgumentException();
+		
+		double bmi = weight / Math.pow(height, 2);
+		bmi = round(bmi,2);
+		return bmi;
 	}
 	
 	/**
 	 * @requires double bmi
 	 * @modifies none
 	 * @effects none
-	 * @throws NullPointerException if bmi is null
 	 * @throws IllegalArgumentException if bmi is < 0
 	 * @returns String representing user's weight class
 	 */
-	public static String weightClass(double bmi) throws NullPointerException, IllegalArgumentException {
-		return "";
+	public static String weightClass(double bmi) throws IllegalArgumentException {
+		if(bmi < 0) throw new IllegalArgumentException();
+		
+		String weightClass;
+		if(bmi < 18.5) weightClass = "UNDERWEIGHT";
+		else if(bmi >= 18.5 && bmi < 25) weightClass = "NORMAL";
+		else if(bmi >= 25 && bmi < 30) weightClass = "OVERWEIGHT";
+		else /*if(bmi >= 30)*/ weightClass = "OBESE";
+		return weightClass;
 	}
 
 	/**
@@ -126,8 +162,10 @@ public class Bmi {
 		boolean metric = isMetric();
 		double height = enterHeight(metric);
 		double weight = enterWeight(metric);
-		double bmi = calcBmi(metric,height,weight);
-		String str = weightClass(bmi);
+		double bmi = calcBmi(height,weight);
+		System.out.println("Your BMI is: " + bmi);
+		String weightClass = weightClass(bmi);
+		System.out.println("You are in the " + weightClass + " range\n");
 		
 		// all screens have identical exit methods, so I only wrote it in NutritionLog
 		if(!NutritionLog.exit()) Bmi.main(null);

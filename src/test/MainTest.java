@@ -95,27 +95,4 @@ public class MainTest {
 		invalid(() -> Main.userInput(),"invalidEmpty",testing, directory, expectedFilename, outFilename);
 	}
 	
-	@Test
-	public void testInvalidLaunch() {
-		assertThrows(IllegalArgumentException.class, () -> Main.launch(6));
-		assertThrows(IllegalArgumentException.class, () -> Main.launch(-1));
-	}
-	
-//	@Test
-//	public void testValidLaunch() throws IOException {
-//		assertThrows(NoSuchElementException.class, () -> Main.launch(1));
-//		assertThrows(NoSuchElementException.class, () -> Main.launch(2));
-//		assertThrows(NoSuchElementException.class, () -> Main.launch(3));
-//		assertThrows(NoSuchElementException.class, () -> Main.launch(4));
-//		assertThrows(NoSuchElementException.class, () -> Main.launch(5));
-//		assertThrows(NoSuchElementException.class, () -> Main.launch(0));
-//		
-//		Main.launch(1);
-//		Main.launch(2);
-//		Main.launch(3);
-//		Main.launch(4);
-//		Main.launch(5);
-//		Main.launch(0);
-//	}
-	
 }
