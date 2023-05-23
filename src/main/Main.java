@@ -74,7 +74,6 @@ public class Main /*implements Callable<Object>*/ {
     }
     
     /**
-     * @param <T>
      * @requires Scanner scan, low and high doubles representing bounds to check
      * @requires String prompt telling user the instructions
      * @modifies none
@@ -88,8 +87,8 @@ public class Main /*implements Callable<Object>*/ {
 		  try {
 			  String next = scan.nextLine();
 			  input = Double.valueOf(next);
-			  if (input < low
-		    		|| input > high) {
+			  if (input <= low
+		    		|| input >= high) {
 			      System.out.println(Main.ERROR);
 			      System.out.print(prompt);
 			  } else break;

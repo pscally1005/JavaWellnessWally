@@ -32,8 +32,8 @@ public class Bmi {
 	 * @returns true if user selects metric units, false otherwise
 	 */
 	public static boolean isMetric() {
-		String prompt = "Enter 1 to use Imperial units (in,lbs)"
-			+ "\nEnter 2 to use Metric units (cm,kg)"
+		String prompt = "Enter 1 to use Imperial units"
+			+ "\nEnter 2 to use Metric units"
 			+ "\n\nPlease enter a selection: ";
 		System.out.print(prompt);
 		
@@ -50,6 +50,8 @@ public class Bmi {
 			metric = false;
 			System.out.println("\nUsing Imperial units...");
 		}
+		
+		System.out.println();
 		return metric;
 	}
 	
