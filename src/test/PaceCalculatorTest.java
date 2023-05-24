@@ -75,24 +75,24 @@ public class PaceCalculatorTest {
 		MainTest.invalid(() -> PaceCalculator.enterDist(false), "distanceNotNumImperial", testing, directory, expectedFilename, outFilename);
 	}
 	
-//	@Test
-//	public void testValidTime() throws IOException {
-//		testing.runTest(() -> PaceCalculator.enterTime(true), "");
-//	}
-//	
-//	@Test
-//	public void testInvalidTime() throws IOException {
-//		MainTest.invalid(() -> PaceCalculator.enterTime(true), "invalidSelectEmpty", testing, directory, expectedFilename, outFilename);
-//	}
-//	
-//	@Test
-//	public void testValidPace() throws IOException {
-//		testing.runTest(() -> PaceCalculator.enterPace(true), "");
-//	}
-//	
-//	@Test
-//	public void testInvalidPace() throws IOException {
-//		MainTest.invalid(() -> PaceCalculator.enterPace(true), "", testing, directory, expectedFilename, outFilename);
-//	}
+	@Test
+	public void testValidTime() throws IOException {
+		testing.runTest(() -> PaceCalculator.enterTimePace(true,true), "timeValid1");
+	}
+	
+	@Test
+	public void testInvalidTime() throws IOException {
+		MainTest.invalid(() -> PaceCalculator.enterTimePace(true,true), "timeInvalid1", testing, directory, expectedFilename, outFilename);
+	}
+	
+	@Test
+	public void testValidPace() throws IOException {
+		testing.runTest(() -> PaceCalculator.enterTimePace(true,false), "paceValid1");
+	}
+	
+	@Test
+	public void testInvalidPace() throws IOException {
+		MainTest.invalid(() -> PaceCalculator.enterTimePace(true,false), "paceInvalid1", testing, directory, expectedFilename, outFilename);
+	}
 	
 }

@@ -51,6 +51,7 @@ public class PaceCalculator {
 		if(input.equals("D")) System.out.println("Calculating Distance...");
 		else if(input.equals("T")) System.out.println("Calculating Time..."); 
 		else System.out.println("Calculating Pace...");
+		System.out.println();
 		
 		return input;
 	}
@@ -71,7 +72,7 @@ public class PaceCalculator {
 		System.out.print(prompt);
 		Scanner scan = new Scanner(System.in);
 		double dist = Main.doubleInput(scan, 0, Double.MAX_VALUE, prompt);
-		System.out.println("You entered: " + dist + " " + unit);
+		System.out.println("You entered: " + dist + " " + unit + "\n");
 		return dist;
 	}
 	
@@ -79,22 +80,33 @@ public class PaceCalculator {
 	 * @requires boolean representing if units are metric are not
 	 * @modifies none
 	 * @effects none
-	 * @throws none
-	 * @returns String representing the inputted time
+	 * @throws NoSuchElementException
+	 * @returns TimePace tp if input is valid
 	 */
-	public static String enterTime(boolean isMetric) {
-		return "";
-	}
-	
-	/**
-	 * @requires boolean representing if units are metric are not
-	 * @modifies none
-	 * @effects none
-	 * @throws none
-	 * @returns String representing the inputted pace
-	 */
-	public static String enterPace(boolean isMetric) {
-		return "";
+	public static TimePace enterTimePace(boolean isMetric, boolean isTime) throws NoSuchElementException {
+		String prompt = "";
+		if(isTime) prompt = "Enter a time in [HH:MM:SS]: ";
+		else prompt = "Enter a pace in [MM:SS]: ";
+		System.out.print(prompt);
+		
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		String input;
+		TimePace tp;
+		
+		while(true) {
+			try {
+				input = scan.nextLine();
+				tp = new TimePace(isTime,input);
+				break;
+			} catch(IllegalArgumentException e) {
+				System.out.println(Main.ERROR);
+				System.out.print(prompt);
+			}
+		}
+		
+		System.out.println("You entered: " + tp);
+		return tp;
 	}
 
 	/**
@@ -110,14 +122,18 @@ public class PaceCalculator {
 		System.out.println(prints());
 		boolean isMetric = Bmi.isMetric();
 		String select = select();
-//		
+		
 		double dist = 0.0;
-		String time, pace;
-		time = pace = "";
+		TimePace time, pace;
+		time = pace = new TimePace();
 		
 		if(!select.equals("D")) dist = enterDist(isMetric);
-		if(!select.equals("T")) time = enterTime(isMetric);
-		if(!select.equals("P")) pace = enterPace(isMetric);
+		if(!select.equals("T")) time = enterTimePace(isMetric,true);
+		if(!select.equals("P")) pace = enterTimePace(isMetric,false);
+		
+		if(select.equals("D")) dist = TimePace.calcDist(isMetric,time,pace);
+		if(select.equals("T")) time = TimePace.calcTime(isMetric,dist,pace);
+		if(select.equals("P")) pace = TimePace.calcPace(isMetric,dist,time);
 	}
 	
 	@Retention(RetentionPolicy.RUNTIME)

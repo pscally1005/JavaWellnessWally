@@ -99,7 +99,7 @@ public class Main /*implements Callable<Object>*/ {
 		}
 		return input;
     }
-
+    
     /**
      * User inputs an integer to choose a screen
      * @requires none
