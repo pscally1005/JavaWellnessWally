@@ -2,6 +2,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Objects;
 
 // TimePace is an immutable ADT
 public class TimePace {
@@ -221,6 +222,19 @@ public class TimePace {
 	}
 	
 	/**
+	 * 
+	 * @requires TimePace tp
+	 * @modifies none
+	 * @effects none
+	 * @throws none
+	 * @return double number of seconds in the given time/pace
+	 */
+	public static double toSeconds(TimePace tp) {
+		double num = (double) (tp.getHours()*3600 + tp.getMinutes()*60 + tp.getSeconds());
+		return num;
+	}
+	
+	/**
 	 * @requries boolean isMetric representing if units are metric (true) or imperial (false)
 	 * @requries TimePace objects time and pace
 	 * @modifies none
@@ -229,7 +243,10 @@ public class TimePace {
 	 * @returns double representing the distance with given time and pace
 	 */
 	public static double calcDist(boolean isMetric, TimePace time, TimePace pace) {
-		return 0.0;
+		double t = toSeconds(time);
+		double p = toSeconds(pace);
+		double d = t / p;
+		return d;
 	}
 	
 	/**
@@ -241,9 +258,16 @@ public class TimePace {
 	 * @returns TimePace representing the time with given dist and pace
 	 */
 	public static TimePace calcTime(boolean isMetric, double dist, TimePace pace) {
-		return new TimePace();
+		double d = dist;
+		double p = toSeconds(pace);
+		int t = (int) (d * p);
+		
+		int hours = t / 3600;
+		int minutes = (t - hours * 3600) / 60;
+		int seconds = (t - hours * 3600) - minutes * 60;
+		return new TimePace(hours,minutes,seconds);
 	}
-	
+
 	/**
 	 * @requries boolean isMetric representing if units are metric (true) or imperial (false)
 	 * @requries double dist and TimePace time
@@ -253,7 +277,45 @@ public class TimePace {
 	 * @returns TimePace representing the pace with given dist and time
 	 */
 	public static TimePace calcPace(boolean isMetric, double dist, TimePace time) {
-		return new TimePace();
+		double d = dist;
+		double t = toSeconds(time);
+		int p = (int) (t / d);
+		
+		int minutes = p  / 60;
+		int seconds = p - minutes * 60;
+		return new TimePace(minutes,seconds);
+	}
+
+	/**
+	 * @requries Object obj to compare this to
+	 * @modifies none
+	 * @effects none
+	 * @throws none
+	 * @returns true if this and obj are equal, false otherwise
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TimePace other = (TimePace) obj;
+		return hours == other.hours 
+				&& isTime == other.isTime 
+				&& minutes == other.minutes 
+				&& seconds == other.seconds;
+	}
+	
+	/**
+	 * @requries none
+	 * @modifies none
+	 * @effects none
+	 * @throws none
+	 * @returns int hash code of this
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(hours, isTime, minutes, seconds);
 	}
 
 }
