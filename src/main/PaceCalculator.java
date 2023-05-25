@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 public class PaceCalculator {
 	
+	public static double CONVERT = 1.609;
+	
 	/**
 	 * @requries none
 	 * @modifies none
@@ -110,6 +112,56 @@ public class PaceCalculator {
 	}
 	
 	/**
+	 * @requries double distMetric
+	 * @modifies none
+	 * @effects none
+	 * @throws none
+	 * @returns double distImperial
+	 */
+	public static double distMetricToImperial(double distMetric) {
+		return distMetric / CONVERT;
+	}
+	
+	/**
+	 * @requries double distImperial
+	 * @modifies none
+	 * @effects none
+	 * @throws none
+	 * @returns double distMetric
+	 */
+	public static double distImperialToMetric(double distImperial) {
+		return distImperial * CONVERT;
+	}
+	
+	/**
+	 * @requries TimePace paceMetric
+	 * @modifies none
+	 * @effects none
+	 * @throws none
+	 * @returns TimePace paceImperial
+	 */
+	public static TimePace paceMetricToImperial(TimePace paceMetric) {
+		double sec = TimePace.toSeconds(paceMetric) * CONVERT;
+		int minutes = (int) (sec  / 60);
+		int seconds = (int) (sec - minutes * 60);
+		return new TimePace(minutes,seconds);
+	}
+	
+	/**
+	 * @requries TimePace paceImperial
+	 * @modifies none
+	 * @effects none
+	 * @throws none
+	 * @returns TimePace paceMetric
+	 */
+	public static TimePace paceImperialToMetric(TimePace paceImperial) {
+		double sec = TimePace.toSeconds(paceImperial) / CONVERT;
+		int minutes = (int) (sec  / 60);
+		int seconds = (int) (sec - minutes * 60);
+		return new TimePace(minutes,seconds);
+	}
+	
+	/**
 	 * @requires boolean isMetric, String dist, TimePace time, TimePace pace
 	 * @modifies none
 	 * @effects none
@@ -127,29 +179,23 @@ public class PaceCalculator {
 		
 		if(isMetric) {
 			distMetric = dist;
-			distImperial = distMetric / 1.609;
+			distImperial = distMetricToImperial(distMetric);
 			str += "Distance: " + Bmi.round(distMetric, places) + " km (" + Bmi.round(distImperial, places) + " mi)\n";
 			
 			str += "Time: " + time + "\n";
 			
 			paceMetric = pace;
-			double sec = TimePace.toSeconds(paceMetric) * 1.609;
-			int minutes = (int) (sec  / 60);
-			int seconds = (int) (sec - minutes * 60);
-			paceImperial = new TimePace(minutes,seconds);
+			paceImperial = paceMetricToImperial(paceMetric);
 			str += "Pace: " + paceMetric + " min/km (" + paceImperial + " min/mi)\n";
 		} else {
 			distImperial = dist;
-			distMetric = distImperial * 1.609;
+			distMetric = distImperialToMetric(distImperial);
 			str += "Distance: " + Bmi.round(distImperial, places) + " mi (" + Bmi.round(distMetric, places) + " km)\n";
 			
 			str += "Time: " + time + "\n";
 			
 			paceImperial = pace;
-			double sec = TimePace.toSeconds(paceImperial) / 1.609;
-			int minutes = (int) (sec  / 60);
-			int seconds = (int) (sec - minutes * 60);
-			paceMetric = new TimePace(minutes,seconds);
+			paceMetric = paceImperialToMetric(paceImperial);
 			str += "Pace: " + paceImperial + " min/mi (" + paceMetric + " min/km)\n";
 		}
 		

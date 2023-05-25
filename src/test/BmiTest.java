@@ -25,7 +25,10 @@ public class BmiTest {
 	
 	@Test
 	public void testPrints() throws IOException {
-		testing.runTest(() -> System.out.println(Bmi.prints()), "prints");
+		String expected = ""
+				+ "BMI CALCULATOR\n\n"
+				+ "This will allow you to enter your height and weight to calculate BMI\n";
+		assertEquals(expected, Bmi.prints());
 	}
 	
 	@Test

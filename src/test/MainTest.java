@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
@@ -69,9 +70,26 @@ public class MainTest {
 	}
 	
 	@Test
-	public void testTitleAndOptions() throws IOException {
-		testing.runTest(() -> System.out.println(Main.title()), "title");
-		testing.runTest(() -> System.out.println(Main.options()), "options");
+	public void testTitle() {
+		String expected = ""
+				+ "##################\n"
+				+ "#                #\n"
+				+ "# WELLNESS WALLY #\n"
+				+ "#                #\n"
+				+ "##################\n";
+		assertEquals(expected, Main.title());
+	}
+	
+	@Test
+	public void testOptions() {
+		String expected = ""
+				+ "1: Nutrition Log\n"
+				+ "2: BMI Calculator\n"
+				+ "3: Pace Calculator\n"
+				+ "4: Split Calculator\n"
+				+ "5: Nutrition Facts Generator\n"
+				+ "0: Exit\n";
+		assertEquals(expected, Main.options());
 	}
 	
 	@Test

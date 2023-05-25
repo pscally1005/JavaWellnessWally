@@ -22,8 +22,11 @@ public class PaceCalculatorTest {
 	}
 	
 	@Test
-	public void testPrints() throws IOException {
-		testing.runTest(() -> System.out.println(PaceCalculator.prints()), "prints");
+	public void testPrints() {
+		String expected = ""
+				+ "PACE CALCULATOR\n\n"
+				+ "This will allow you to calculate pace, distance, or time\n";
+		assertEquals(expected, PaceCalculator.prints());
 	}
 	
 	@Test

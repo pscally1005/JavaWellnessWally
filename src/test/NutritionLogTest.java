@@ -27,7 +27,11 @@ public class NutritionLogTest {
 	
 	@Test
 	public void testPrints() throws IOException {
-		testing.runTest(() -> System.out.println(NutritionLog.prints()), "prints");
+		String expected = ""
+				+ "NUTRITION LOG\n\n"
+				+ "This will allow you to rate your nutrition for today and why\n"
+				+ "This data will be saved to a log file\n";
+		assertEquals(expected, NutritionLog.prints());
 	}
 	
 	@Test
