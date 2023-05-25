@@ -108,6 +108,46 @@ public class PaceCalculator {
 		System.out.println("You entered: " + tp);
 		return tp;
 	}
+	
+	/**
+	 * @requires boolean isMetric, String dist, TimePace time, TimePace pace
+	 * @modifies none
+	 * @effects none
+	 * @throws none
+	 * @returns String representing the results
+	 */
+	public static String results(boolean isMetric, double dist, TimePace time, TimePace pace) {
+		String str = "RESULTS...\n";
+		
+		double distMetric, distImperial;
+		distMetric = distImperial = 0;
+		TimePace paceMetric, paceImperial;
+		paceMetric = paceImperial = new TimePace();
+		
+		if(isMetric) {
+			distMetric = dist;
+			distImperial = distMetric / 1.609;
+			
+			paceMetric = pace;
+			double sec = TimePace.toSeconds(paceMetric) / 1.609;
+			int minutes = (int) (sec  / 60);
+			int seconds = (int) (sec - minutes * 60);
+			paceImperial = new TimePace(minutes,seconds);
+		} else {
+			distImperial = dist;
+			distMetric = distImperial * 1.609;
+			
+			paceImperial = pace;
+			double sec = TimePace.toSeconds(paceImperial) * 1.609;
+			int minutes = (int) (sec  / 60);
+			int seconds = (int) (sec - minutes * 60);
+			paceMetric = new TimePace(minutes,seconds);
+		}
+		
+		// TODO: finish and test
+		
+		return str;
+	}
 
 	/**
 	 * Overall main method for PaceCalculator
@@ -131,9 +171,12 @@ public class PaceCalculator {
 		if(!select.equals("T")) time = enterTimePace(isMetric,true);
 		if(!select.equals("P")) pace = enterTimePace(isMetric,false);
 		
+		System.out.println();
 		if(select.equals("D")) dist = TimePace.calcDist(isMetric,time,pace);
 		if(select.equals("T")) time = TimePace.calcTime(isMetric,dist,pace);
 		if(select.equals("P")) pace = TimePace.calcPace(isMetric,dist,time);
+		
+		System.out.println(results(isMetric,dist,time,pace));
 	}
 	
 	@Retention(RetentionPolicy.RUNTIME)
