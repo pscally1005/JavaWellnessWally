@@ -149,6 +149,10 @@ public class Main /*implements Callable<Object>*/ {
     	else if(input == 3) PaceCalculator.main(null);
     	else if(input == 4) SplitCalculator.main(null);
     	else if(input == 5) NutritionFacts.main(null);
+    	else return;
+    	
+    	System.out.println();
+    	main(null);
     }
     
     @Retention(RetentionPolicy.RUNTIME)

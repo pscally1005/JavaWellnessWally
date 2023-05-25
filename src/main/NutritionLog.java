@@ -121,8 +121,10 @@ public class NutritionLog {
 		int num = enterNum();
 		String desc = enterDesc(num);
 		writeToFile(num,desc);
-		if(!exit()) NutritionLog.main(null);
-		else Main.main(null);
+		if(!exit()) {
+			System.out.println();
+			NutritionLog.main(null);
+		}
 	}
 	
 	@Retention(RetentionPolicy.RUNTIME)

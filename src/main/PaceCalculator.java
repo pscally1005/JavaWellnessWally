@@ -117,6 +117,7 @@ public class PaceCalculator {
 	 * @returns String representing the results
 	 */
 	public static String results(boolean isMetric, double dist, TimePace time, TimePace pace) {
+		int places = 2;
 		String str = "RESULTS...\n";
 		
 		double distMetric, distImperial;
@@ -127,24 +128,30 @@ public class PaceCalculator {
 		if(isMetric) {
 			distMetric = dist;
 			distImperial = distMetric / 1.609;
+			str += "Distance: " + Bmi.round(distMetric, places) + " km (" + Bmi.round(distImperial, places) + " mi)\n";
+			
+			str += "Time: " + time + "\n";
 			
 			paceMetric = pace;
-			double sec = TimePace.toSeconds(paceMetric) / 1.609;
+			double sec = TimePace.toSeconds(paceMetric) * 1.609;
 			int minutes = (int) (sec  / 60);
 			int seconds = (int) (sec - minutes * 60);
 			paceImperial = new TimePace(minutes,seconds);
+			str += "Pace: " + paceMetric + " min/km (" + paceImperial + " min/mi)\n";
 		} else {
 			distImperial = dist;
 			distMetric = distImperial * 1.609;
+			str += "Distance: " + Bmi.round(distImperial, places) + " mi (" + Bmi.round(distMetric, places) + " km)\n";
+			
+			str += "Time: " + time + "\n";
 			
 			paceImperial = pace;
-			double sec = TimePace.toSeconds(paceImperial) * 1.609;
+			double sec = TimePace.toSeconds(paceImperial) / 1.609;
 			int minutes = (int) (sec  / 60);
 			int seconds = (int) (sec - minutes * 60);
 			paceMetric = new TimePace(minutes,seconds);
+			str += "Pace: " + paceImperial + " min/mi (" + paceMetric + " min/km)\n";
 		}
-		
-		// TODO: finish and test
 		
 		return str;
 	}
@@ -177,6 +184,9 @@ public class PaceCalculator {
 		if(select.equals("P")) pace = TimePace.calcPace(isMetric,dist,time);
 		
 		System.out.println(results(isMetric,dist,time,pace));
+		
+		// all screens have identical exit methods, so I only wrote it in NutritionLog
+		if(!NutritionLog.exit()) PaceCalculator.main(null);
 	}
 	
 	@Retention(RetentionPolicy.RUNTIME)

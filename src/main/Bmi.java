@@ -144,8 +144,10 @@ public class Bmi {
 		
 		String weightClass;
 		if(bmi < 18.5) weightClass = "UNDERWEIGHT";
-		else if(bmi >= 18.5 && bmi < 25) weightClass = "NORMAL";
-		else if(bmi >= 25 && bmi < 30) weightClass = "OVERWEIGHT";
+		else if(/*bmi >= 18.5 
+				&&*/ bmi < 25) weightClass = "NORMAL";
+		else if(/*bmi >= 25 
+				&&*/ bmi < 30) weightClass = "OVERWEIGHT";
 		else /*if(bmi >= 30)*/ weightClass = "OBESE";
 		return weightClass;
 	}
@@ -170,7 +172,10 @@ public class Bmi {
 		System.out.println("You are in the " + weightClass + " range\n");
 		
 		// all screens have identical exit methods, so I only wrote it in NutritionLog
-		if(!NutritionLog.exit()) Bmi.main(null);
+		if(!NutritionLog.exit()) {
+			System.out.println();
+			Bmi.main(null);
+		}
 	}
 	
 	@Retention(RetentionPolicy.RUNTIME)

@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
@@ -93,6 +94,27 @@ public class PaceCalculatorTest {
 	@Test
 	public void testInvalidPace() throws IOException {
 		MainTest.invalid(() -> PaceCalculator.enterTimePace(true,false), "paceInvalid1", testing, directory, expectedFilename, outFilename);
+	}
+	
+	@Test
+	public void testResults() {
+		String expected = "RESULTS...\n"
+				+ "Distance: 8.0 mi (12.87 km)\n"
+				+ "Time: 01:04:00\n"
+				+ "Pace: 08:00 min/mi (04:58 min/km)\n";
+		assertEquals(expected, PaceCalculator.results(false, 8, new TimePace(1,4,0), new TimePace(8,0)));
+		
+		expected = "RESULTS...\n"
+				+ "Distance: 5.0 km (3.11 mi)\n"
+				+ "Time: 00:20:00\n"
+				+ "Pace: 04:00 min/km (06:26 min/mi)\n";
+		assertEquals(expected, PaceCalculator.results(true, 5, new TimePace(0,20,0), new TimePace(4,0)));
+		
+		expected = "RESULTS...\n"
+				+ "Distance: 13.1 mi (21.08 km)\n"
+				+ "Time: 01:35:00\n"
+				+ "Pace: 07:15 min/mi (04:30 min/km)\n";
+		assertEquals(expected, PaceCalculator.results(false, 13.1, new TimePace(1,35,0), new TimePace(7,15)));
 	}
 	
 }
