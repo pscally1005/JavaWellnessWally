@@ -8,5 +8,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="lib" path="C:/Users/mets1/OneDrive/Other/json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="out/production/JavaWellnessWally"/>
 </classpath>
